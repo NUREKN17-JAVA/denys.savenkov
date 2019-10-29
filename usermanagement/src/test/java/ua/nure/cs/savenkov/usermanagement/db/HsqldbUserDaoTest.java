@@ -6,6 +6,7 @@ import org.dbunit.DatabaseTestCase;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.XmlDataSet;
 
 import ua.nure.cs.savenkov.usermanagement.User;
 
@@ -40,7 +41,8 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	  @Override
 	  protected IDataSet getDataSet() throws Exception {
-	    // TODO Auto-generated method stub
+		IDataSet dataSet = new XmlDataSet(
+				getClass().getClassLoader().getResourceAsStream("usersDataSet.xml"))
 	    return null;
 	  }
 
