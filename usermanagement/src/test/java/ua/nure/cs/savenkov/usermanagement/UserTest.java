@@ -1,17 +1,13 @@
 package ua.nure.cs.savenkov.usermanagement;
 
 import java.util.Calendar;
-import java.util.Date;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import junit.framework.TestCase;
 
-class UserTest extends TestCase {
-
+public class UserTest extends TestCase {
+	
 	private User user;
-		
+	
 	// for testGetAge()
 	private static final int DAY_OF_BIRTH = 9;
 	private static final int MONTH_OF_BIRTH = Calendar.JANUARY; // or 1
@@ -43,13 +39,11 @@ class UserTest extends TestCase {
 	
 	// tested on 27 Oct. 2019
 	
-	@BeforeEach
 	protected void setUp() throws Exception {
 		super.setUp();
 		user = new User();
 	}
 	
-	@Test
 	// Test to get user's full name
 	public void testGetFullName() {
 		user.setFirstName("John");
@@ -57,7 +51,6 @@ class UserTest extends TestCase {
 		assertEquals("Doe, John", user.getFullName());
 	}
 	
-	@Test
 	// A test to get user's age
 	public void testGetAge() {
 		Calendar calendar = Calendar.getInstance();
@@ -66,7 +59,6 @@ class UserTest extends TestCase {
 		assertEquals(ETHALON_AGE, user.getAge());
 	}
 	
-	@Test
 	// A test to get user's age if his birthday is today
 	public void testGetAgeToday() {
 		Calendar calendar = Calendar.getInstance();
@@ -75,7 +67,6 @@ class UserTest extends TestCase {
 		assertEquals(ETHALON_AGE_TODAY, user.getAge());
 	}
 	
-	@Test
 	// A test to get user's age if his birhday will be tomorrow
 	// (or it will be this year after the current day)
 	public void testGetAgeTomorrow() {
@@ -85,7 +76,6 @@ class UserTest extends TestCase {
 		assertEquals(ETHALON_AGE_TOMORROW, user.getAge());
 	}
 	
-	@Test
 	// A test to get user's age if his birhday will be this day next month
 	public void testGetAgeNextMonth() {
 		Calendar calendar = Calendar.getInstance();
@@ -94,12 +84,21 @@ class UserTest extends TestCase {
 		assertEquals(ETHALON_AGE_NEXT_MONTH, user.getAge());
 	}
 
-	@Test
 	// A test to get user's age who has not been born yet
 	public void testGetAgeNotBorn() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(YEAR_OF_BIRTH_NOT_BORN, MONTH_OF_BIRTH_NOT_BORN, DAY_OF_BIRTH_NOT_BORN);
 		user.setDateOfBirth(calendar.getTime());
-		assertTrue("Wrong user`s year of birth",user.getAge()<0);
+		assertTrue("Wrong user`s year of birth", user.getAge()<0);
 	}
+
+	public UserTest(String name) {
+		super(name);
+	}
+
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
 }
