@@ -29,7 +29,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 
 	  protected void setUp() throws Exception {
 	    super.setUp();
-	    dao = new HsqldbUserDao();
+	    dao = new HsqldbUserDao(connectionFactory);
 	  }
 
 	  @Override

@@ -1,9 +1,11 @@
 package ua.nure.cs.savenkov.usermanagement.db;
 
 import java.util.Collection;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import ua.nure.cs.savenkov.usermanagement.User;
@@ -13,6 +15,7 @@ import ua.nure.cs.savenkov.usermanagement.User;
 public class HsqldbUserDao implements UserDao<User> {
   
   private ConnectionFactory connectionFactory;
+  private static final String CALL_IDENTITY = "call IDENTITY()";
   private static final String INSERT_QUERY = "insert into users (firstname, lastname, dateofbirth) values (?,?,?)";
   
   public HsqldbUserDao(ConnectionFactory connectionFactory) {
@@ -29,10 +32,15 @@ public class HsqldbUserDao implements UserDao<User> {
 		preparedStatement.setDate(3, new Date(entity.getDateOfBirth().getTime()));
 		int numberOfRows = preparedStatement.executeUpdate();
 		if(numberOfRows != 1) {
-			throw new DataBaseException("Number of rows: " + numberOfRows)
+			throw new DataBaseException("Number of rows: " + numberOfRows);
+		}
+		CallableStatement callableStatement = connection.prepareCall(CALL_IDENTITY);
+		ResultSet keys = callableStatement.executeQuery();
+		if (keys.next()) {
+			entity.setId(keys.getLong(1));
 		}
 	} catch (SQLException e) {
-		throw new DataBaseException(e)
+		throw new DataBaseException(e);
 	} catch(DataBaseException e) {
 		throw e;
 	}
