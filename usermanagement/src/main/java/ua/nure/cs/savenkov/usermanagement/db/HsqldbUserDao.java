@@ -5,11 +5,17 @@ import java.util.Collection;
 import ua.nure.cs.savenkov.usermanagement.User;
 
 public class HsqldbUserDao implements UserDao {
-
+	
+	private ConnectionFactory connectionFactory;
+	
 	@Override
 	public User create(User user) throws DataBaseException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public HsqldbUserDao(ConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
 	}
 
 	@Override

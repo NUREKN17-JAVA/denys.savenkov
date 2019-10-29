@@ -13,6 +13,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
   private static final String LASTNAME = "Doe";
   private static final String FIRSTNAME = "John";
   private HsqldbUserDao dao;
+  private ConnectionFactory connectionFactory;
   
   public void testCreate() throws DataBaseException {
     try {
