@@ -16,4 +16,17 @@ public class DaoFactory {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	private ConnectionFactory getConnectionFactory() {
+		String user = properties.getProperty("connection.user");
+		String password = properties.getProperty("connection.password");
+		String url  = properties.getProperty("connection.url");
+		String driver = properties.getProperty("connection.driver");
+		return new ConnectionFactoryImpl(driver, url, user, password);
+	}
+	
+	public UserDao getUserDao() {
+		UserDao result = null;
+		return result;
+	}
 }

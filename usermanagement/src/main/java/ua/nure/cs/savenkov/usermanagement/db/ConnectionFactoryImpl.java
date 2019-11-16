@@ -7,10 +7,17 @@ import java.sql.SQLException;
 import javax.management.RuntimeErrorException;
 
 public class ConnectionFactoryImpl implements ConnectionFactory {
-	private String url = "jdbc:hsqldb:file:db/usermanagement";
-	private String user = "sa";
-	private String password ="";
-	private String driver = "org.hsqldb.jdbcDriver";
+	private String url;
+	private String user;
+	private String password;
+	private String driver;
+
+	public ConnectionFactoryImpl(String driver, String url, String user, String password) {
+		this.driver = driver;
+		this.url = url;
+		this.user = user;
+		this.password = password; 
+	}
 
 	@Override
 	public Connection createConnection() throws DataBaseException {
@@ -24,6 +31,11 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
 	    } catch (SQLException e) {
 	      throw new DataBaseException(e);
 	    }
+	}
+	
+	private ConnectionFactory getConnection() {
+		//String user = proper
+		return null;
 	}
 
 }
