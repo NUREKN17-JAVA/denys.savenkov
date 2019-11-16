@@ -16,7 +16,7 @@ public class HsqldbUserDao implements UserDao<User> {
   
   private ConnectionFactory connectionFactory;
   private static final String CALL_IDENTITY = "call IDENTITY()";
-  private static final String INSERT_QUERY = "insert into users (firstname, lastname, dateofbirth) values (?,?,?)";
+  private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES (?,?,?)";
   
   public HsqldbUserDao(ConnectionFactory connectionFactory) {
     this.connectionFactory = connectionFactory;
@@ -24,8 +24,8 @@ public class HsqldbUserDao implements UserDao<User> {
 
   @Override
   public User create(User entity) throws DataBaseException {
-    Connection connection = connectionFactory.createConnection();
     try {
+        Connection connection = connectionFactory.createConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY);
 		preparedStatement.setString(1, entity.getFirstName());
 		preparedStatement.setString(2, entity.getLastName());
@@ -37,18 +37,18 @@ public class HsqldbUserDao implements UserDao<User> {
 		CallableStatement callableStatement = connection.prepareCall(CALL_IDENTITY);
 		ResultSet keys = callableStatement.executeQuery();
 		if (keys.next()) {
-			entity.setId(keys.getLong(1));
+			entity.setId(new Long(keys.getLong(1)));
 		}
 		keys.close();
 		callableStatement.close();
 		preparedStatement.close();
 		connection.close();
-	} catch (SQLException e) {
-		throw new DataBaseException(e);
+		return entity;
 	} catch(DataBaseException e) {
 		throw e;
+	} catch (SQLException e) {
+		throw new DataBaseException(e);
 	}
-	return null;
   }
 
   @Override
