@@ -7,6 +7,7 @@ import ua.nure.cs.savenkov.usermanagement.User;
 
 
 public class DaoFactory {
+	private static final String USER_DAO = "dao.usermanagement.db.UserDao";
 	private final Properties properties;
 	
 	public DaoFactory() {
@@ -27,16 +28,15 @@ public class DaoFactory {
 		return new ConnectionFactoryImpl(driver, url, user, password);
 	}
 	
-//	public Dao<User> getDao() throws ReflectiveOperationException {
-//		Dao<User> Dao = null;
-//        try {
-//            Class DaoClass = Class.forName(properties.getProperty("dao.Dao"));
-//            Dao = (Dao<User>) DaoClass.newInstance();
-//            Dao.setConnectionFactory(getConnectionFactory());
-//        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-//            throw new ReflectiveOperationException(e);
-//        }
-//
-//        return Dao;
-//	}
+	public Dao<User> getUserDao() {
+		Dao<User> result = null;
+        try {
+            Class clazz = Class.forName(properties.getProperty(USER_DAO));
+            Dao<User> dao = (Dao<User>) clazz.newInstance();
+            dao.setConnectionFactory(getConnectionFactory());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+	}
 }
