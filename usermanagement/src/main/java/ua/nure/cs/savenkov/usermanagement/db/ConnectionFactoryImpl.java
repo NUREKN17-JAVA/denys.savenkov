@@ -33,9 +33,5 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
 	    }
 	}
 	
-	private ConnectionFactory getConnection() {
-		//String user = proper
-		return null;
-	}
 
 }

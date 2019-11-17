@@ -3,6 +3,8 @@ package ua.nure.cs.savenkov.usermanagement.db;
 import java.io.IOException;
 import java.util.Properties;
 
+import ua.nure.cs.savenkov.usermanagement.User;
+
 
 public class DaoFactory {
 	private final Properties properties;
@@ -25,8 +27,16 @@ public class DaoFactory {
 		return new ConnectionFactoryImpl(driver, url, user, password);
 	}
 	
-	public UserDao getUserDao() {
-		UserDao result = null;
-		return result;
-	}
+//	public UserDao<User> getUserDao() throws ReflectiveOperationException {
+//		UserDao<User> userDao = null;
+//        try {
+//            Class UserDaoClass = Class.forName(properties.getProperty("dao.UserDao"));
+//            userDao = (UserDao<User>) UserDaoClass.newInstance();
+//            userDao.setConnectionFactory(getConnectionFactory());
+//        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+//            throw new ReflectiveOperationException(e);
+//        }
+//
+//        return userDao;
+//	}
 }

@@ -8,8 +8,8 @@ public class DataBaseException extends Exception {
     super(e);
   }
   
-  public DataBaseException(String string) {
-	  // TODO: Auto-generated constructor stub
+  public DataBaseException(String str) {
+      super(str);
   }
 
 }
