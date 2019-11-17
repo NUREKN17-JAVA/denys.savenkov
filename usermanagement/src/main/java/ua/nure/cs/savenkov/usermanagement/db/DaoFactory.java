@@ -27,16 +27,16 @@ public class DaoFactory {
 		return new ConnectionFactoryImpl(driver, url, user, password);
 	}
 	
-//	public UserDao<User> getUserDao() throws ReflectiveOperationException {
-//		UserDao<User> userDao = null;
+//	public Dao<User> getDao() throws ReflectiveOperationException {
+//		Dao<User> Dao = null;
 //        try {
-//            Class UserDaoClass = Class.forName(properties.getProperty("dao.UserDao"));
-//            userDao = (UserDao<User>) UserDaoClass.newInstance();
-//            userDao.setConnectionFactory(getConnectionFactory());
+//            Class DaoClass = Class.forName(properties.getProperty("dao.Dao"));
+//            Dao = (Dao<User>) DaoClass.newInstance();
+//            Dao.setConnectionFactory(getConnectionFactory());
 //        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 //            throw new ReflectiveOperationException(e);
 //        }
 //
-//        return userDao;
+//        return Dao;
 //	}
 }
