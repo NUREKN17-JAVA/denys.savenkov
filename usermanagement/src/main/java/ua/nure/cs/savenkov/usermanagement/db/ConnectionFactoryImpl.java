@@ -18,7 +18,7 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
 		this.user = user;
 		this.password = password; 
 	}
-
+	public ConnectionFactoryImpl() {	}
 	@Override
 	public Connection createConnection() throws DataBaseException {
 	    try {
