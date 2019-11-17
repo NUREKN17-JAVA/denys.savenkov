@@ -3,12 +3,19 @@ package ua.nure.cs.savenkov.usermanagement.db;
 import java.io.IOException;
 import java.util.Properties;
 
+import sun.security.jca.GetInstance.Instance;
 import ua.nure.cs.savenkov.usermanagement.User;
 
 
 public class DaoFactory {
 	private static final String USER_DAO = "dao.usermanagement.db.UserDao";
 	private final Properties properties;
+	
+	private final static DaoFactory INSTANCE = new DaoFactory();
+	
+	public static DaoFactory getInstance() {
+		return INSTANCE;
+	}
 	
 	public DaoFactory() {
 		properties = new Properties();
