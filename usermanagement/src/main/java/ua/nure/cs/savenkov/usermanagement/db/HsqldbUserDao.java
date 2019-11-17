@@ -17,9 +17,12 @@ import ua.nure.cs.savenkov.usermanagement.User;
 
 class HsqldbUserDao implements Dao<User> {
   
-  private ConnectionFactory connectionFactory;
+  private static final String SELECT_QUERY = "SELECT * FROM users WHERE id=?";
+private static final String SELECT_ALL_QUERY = "SELECT * FROM users";
+private ConnectionFactory connectionFactory;
   private static final String CALL_IDENTITY = "call IDENTITY()";
   private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUES (?,?,?)";
+  private static final String UPDATE_QUERY = "UPDATE users SET firstname = ?, lastname = ?, dateofbirth = ? WHERE id = ?";
   
   public HsqldbUserDao() {
   }
@@ -67,8 +70,24 @@ public void setConnectionFactory(ConnectionFactory connectionFactory) {
 
   @Override
   public void update(User entity) throws DataBaseException {
-    // TODO Auto-generated method stub
-    
+	  try {
+	        Connection connection = connectionFactory.createConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
+			preparedStatement.setString(1, entity.getFirstName());
+			preparedStatement.setString(2, entity.getLastName());
+			preparedStatement.setDate(3, new Date(entity.getDateOfBirth().getTime()));
+			preparedStatement.setLong(4, entity.getId());
+			int numberOfRows = preparedStatement.executeUpdate();
+			if(numberOfRows != 1) {
+				throw new DataBaseException("Number of updated rows: " + numberOfRows);
+			}
+			preparedStatement.close();
+			connection.close();
+		} catch(DataBaseException e) {
+			throw e;
+		} catch (SQLException e) {
+			throw new DataBaseException(e);
+		}
   }
 
   @Override
@@ -79,8 +98,28 @@ public void setConnectionFactory(ConnectionFactory connectionFactory) {
 
   @Override
   public User find(Long id) throws DataBaseException {
-    // TODO Auto-generated method stub
-    return null;
+	  User entity = null;
+	  try {
+	        Connection connection = connectionFactory.createConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SELECT_QUERY);
+			preparedStatement.setLong(1, id);
+			ResultSet result = preparedStatement.executeQuery();
+			if (result.next()) {
+				entity = new User();
+				entity.setId(result.getLong(1));
+				entity.setFirstName(result.getString(2));
+				entity.setLastName(result.getString(3));
+				entity.setDateOfBirth(result.getDate(4));
+			}
+			result.close();
+			preparedStatement.close();
+			connection.close();
+		} catch(DataBaseException e) {
+			throw e;
+		} catch (SQLException e) {
+			throw new DataBaseException(e);
+		}
+	    return entity;
   }
 
   @Override
@@ -90,7 +129,7 @@ public void setConnectionFactory(ConnectionFactory connectionFactory) {
       try {
           Connection connection = connectionFactory.createConnection();
           Statement statement = connection.createStatement();
-          ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+          ResultSet resultSet = statement.executeQuery(SELECT_ALL_QUERY);
 
           while (resultSet.next()) {
               User user = new User();

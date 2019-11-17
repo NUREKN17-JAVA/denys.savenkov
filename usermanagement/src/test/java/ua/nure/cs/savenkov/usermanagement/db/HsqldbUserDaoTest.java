@@ -14,6 +14,7 @@ import ua.nure.cs.savenkov.usermanagement.User;
 
 public class HsqldbUserDaoTest extends DatabaseTestCase {
 
+	  private static final int NUMBER_OF_ROWS = 2;
 	  private static final String LASTNAME = "Doe";
 	  private static final String FIRSTNAME = "John";
 	  private static final Long TEST_ID = 666L;
@@ -24,6 +25,10 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	  private static final String CONNECTION_PASSWORD = "";
 	  private static final String CONNECTION_URL = "jdbc:hsqldb:file:db/usermanagement";
 	  private static final String CONNECTION_DRIVER = "org.hsqldb.jdbcDriver";
+	  
+	  
+	  private static final String UPDATED_LASTNAME = "Savenkov";
+	  private static final String UPDATED_FIRSTNAME = "Denys";
 	  
 	  private User user;
 	  
@@ -45,11 +50,35 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 		}
 	  }
 	  
+	  public void testFind() throws DataBaseException {
+	        assertNotNull(user.getId());
+
+	        User ethalonUser = dao.create(user);
+	        User findedUser = dao.find(ethalonUser.getId());
+
+	        assertNotNull(findedUser);
+	        assertEquals(ethalonUser.getId(), findedUser.getId());
+	        assertEquals(ethalonUser.getFirstName(), findedUser.getFirstName());
+	        assertEquals(ethalonUser.getLastName(), findedUser.getLastName());
+
+	    }
+	  
 	  public void testFindAll() throws DataBaseException {
 	        Collection<User> items = dao.findAll();
 	        assertNotNull(items);
-	        assertEquals("Collection size doesn't match ethalon.", 2, items.size());
+	        assertEquals("Collection size doesn't match ethalon.", NUMBER_OF_ROWS, items.size());
 	    }
+	  
+	  public void testUpdate() throws DataBaseException{
+		  User upd_user = user;
+		  dao.create(upd_user);
+		  upd_user.setFirstName(UPDATED_FIRSTNAME);
+		  upd_user.setFirstName(UPDATED_LASTNAME);
+		  
+		  dao.update(upd_user);
+		  User check = dao.find(user.getId());
+	      assertEquals(upd_user.getFirstName() + upd_user.getLastName(), check.getFirstName() + check.getLastName());
+	  }
 	  
 	  protected void setUp() throws Exception {
 	    super.setUp();
@@ -68,14 +97,7 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 		connectionFactory = new ConnectionFactoryImpl(CONNECTION_DRIVER, CONNECTION_URL, CONNECTION_USER, CONNECTION_PASSWORD);
 	    return new DatabaseConnection(connectionFactory.createConnection());
 	  }
-//
-//	  public ConnectionFactory getConnectionFactory() {
-//		return connectionFactory;
-//	}
 
-//	public void setConnectionFactory(ConnectionFactory connectionFactory) {
-//		this.connectionFactory = connectionFactory;
-//	}
 
 	@Override
 	  protected IDataSet getDataSet() throws Exception {
