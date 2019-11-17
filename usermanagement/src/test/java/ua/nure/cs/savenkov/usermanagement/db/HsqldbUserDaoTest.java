@@ -80,6 +80,12 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	      assertEquals(upd_user.getFirstName() + upd_user.getLastName(), check.getFirstName() + check.getLastName());
 	  }
 	  
+	    public void testDelete() throws DataBaseException {
+	        User deletedUser = dao.create(user);
+	        dao.delete(deletedUser);
+	        assertNull(dao.find(deletedUser.getId()));
+	    }
+	  
 	  protected void setUp() throws Exception {
 	    super.setUp();
 

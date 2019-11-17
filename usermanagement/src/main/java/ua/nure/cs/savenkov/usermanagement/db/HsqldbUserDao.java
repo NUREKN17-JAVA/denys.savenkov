@@ -17,7 +17,8 @@ import ua.nure.cs.savenkov.usermanagement.User;
 
 class HsqldbUserDao implements Dao<User> {
   
-  private static final String SELECT_QUERY = "SELECT * FROM users WHERE id=?";
+  private static final String DELETE_QUERY = "DELETE FROM users WHERE id=?";
+private static final String SELECT_QUERY = "SELECT * FROM users WHERE id=?";
 private static final String SELECT_ALL_QUERY = "SELECT * FROM users";
 private ConnectionFactory connectionFactory;
   private static final String CALL_IDENTITY = "call IDENTITY()";
@@ -92,7 +93,21 @@ public void setConnectionFactory(ConnectionFactory connectionFactory) {
 
   @Override
   public void delete(User entity) throws DataBaseException {
-    // TODO Auto-generated method stub
+	  try {
+	        Connection connection = connectionFactory.createConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
+			preparedStatement.setLong(1, entity.getId());
+			int numberOfRows = preparedStatement.executeUpdate();
+			if(numberOfRows != 1) {
+				throw new DataBaseException("Number of deleted rows: " + numberOfRows);
+			}
+			preparedStatement.close();
+			connection.close();
+		} catch(DataBaseException e) {
+			throw e;
+		} catch (SQLException e) {
+			throw new DataBaseException(e);
+		}
     
   }
 
