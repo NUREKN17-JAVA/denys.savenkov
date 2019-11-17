@@ -15,7 +15,7 @@ import ua.nure.cs.savenkov.usermanagement.User;
 
 
 
-public class HsqldbUserDao implements Dao<User> {
+class HsqldbUserDao implements Dao<User> {
   
   private ConnectionFactory connectionFactory;
   private static final String CALL_IDENTITY = "call IDENTITY()";
