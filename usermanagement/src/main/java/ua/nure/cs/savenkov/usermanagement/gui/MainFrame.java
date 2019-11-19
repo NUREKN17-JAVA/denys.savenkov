@@ -12,6 +12,7 @@ public class MainFrame extends JFrame {
 	private static final int WIDTH = 800;
 	private JPanel contentPanel;
 	private BrowsePanel browsePanel;
+	private AddPanel addPanel;
 	
 	public MainFrame() {
 		super();
@@ -41,5 +42,24 @@ public class MainFrame extends JFrame {
 			browsePanel = new BrowsePanel(this);
 		}
 		return browsePanel;
+	}
+	private AddPanel getAddPanel() {
+		if (addPanel == null) {
+			addPanel = new AddPanel(this);
+		}
+		return addPanel;
+	}
+	
+	
+	
+	public void showAddPanel() {
+		showPanel(getAddPanel());
+	}
+
+	private void showPanel(JPanel panel) {
+		getContentPane().add(panel, BorderLayout.CENTER);
+		panel.setVisible(true);
+		panel.repaint();
+		
 	}
 }
