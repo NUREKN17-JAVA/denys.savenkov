@@ -15,6 +15,7 @@ public class MainFrameTest extends JFCTestCase {
 	private static final String DETAILS_BUTTON_COMPONENT_NAME = "detailsButton";
 	private static final String EDIT_BUTTON_COMPONENT_NAME = "editButton";
 	private static final String ADD_BUTTON_COMPONENT_NAME = "addButton";
+	private static final String DELETE_BUTTON_COMPONENT_NAME = "deleteButton";
 	private static final String USER_TABLE_COMPONENT_NAME = "userTable";
 	private static final String BROWSE_PANEL_COMPONENT_NAME = "browsePanel";
 	private MainFrame mainFrame;
