@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import javafx.scene.input.DataFormat;
 import junit.extensions.jfcunit.JFCTestCase;
 import junit.extensions.jfcunit.JFCTestHelper;
 import junit.extensions.jfcunit.TestHelper;
@@ -30,6 +31,7 @@ public class MainFrameTest extends JFCTestCase {
 	private static final String USER_TABLE_COMPONENT_NAME = "userTable";
 	private static final String BROWSE_PANEL_COMPONENT_NAME = "browsePanel";
 	private static final String OK_BUTTON_COMPONENT_NAME = "okButton";
+	private static final String CANCEL_BUTTON_COMPONENT_NAME = "cancelButton";
 	private static final String FIRST_NAME = "John";
 	private static final String LAST_NAME = "Doe";
 	private static final Date DATE_OF_BIRTH = new Date();
@@ -76,6 +78,10 @@ public class MainFrameTest extends JFCTestCase {
 	
 	public void testAddUserOk() {
 		find(JPanel.class, BROWSE_PANEL_COMPONENT_NAME);
+		
+		JTable table = (JTable)find(JTable.class, USER_TABLE_COMPONENT_NAME);
+		assertEquals(0, table.getRowCount());
+		
 		JButton addButton = (JButton) find(JButton.class, ADD_BUTTON_COMPONENT_NAME);
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		find(JPanel.class, ADD_PANEL_COMPONENT_NAME);
@@ -83,15 +89,16 @@ public class MainFrameTest extends JFCTestCase {
 		JTextField firstNameField = (JTextField) find(JTextField.class, FIRST_NAME_FIELD);
 		JTextField lastNameField = (JTextField) find(JTextField.class, LAST_NAME_FIELD);
 		JTextField dateOfBirthField = (JTextField) find(JTextField.class, DATE_OF_BIRTH_FIELD);
-		
-		getHelper().sendString(new StringEventData(this, firstNameField, FIRST_NAME));
-		
-//		fillFields(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
-		
 		JButton okButton = (JButton) find(JButton.class, OK_BUTTON_COMPONENT_NAME);
+		find(JButton.class, CANCEL_BUTTON_COMPONENT_NAME);
+		
+		fillFields(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
+		
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
 		
 		find(JPanel.class, BROWSE_PANEL_COMPONENT_NAME);
+		table = (JTable)find(JTable.class, USER_TABLE_COMPONENT_NAME);
+		assertEquals(1, table.getRowCount());
 	}
 
 	private void fillFields(String firstName, String lastName, Date dateOfBirth) {
