@@ -110,8 +110,12 @@ public class BrowsePanel extends JPanel implements ActionListener {
 		return userTable;
 	}
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+	public void actionPerformed(ActionEvent e) {
+		String actionCommand = e.getActionCommand();
+		if ("add".equalsIgnoreCase(actionCommand)) {
+			this.setVisible(false);
+			parent.showAddPanel();
+		}
 		
 	}
 }
