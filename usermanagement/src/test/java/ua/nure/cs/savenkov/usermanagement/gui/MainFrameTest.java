@@ -33,6 +33,9 @@ public class MainFrameTest extends JFCTestCase {
 	private static final String FIRST_NAME = "John";
 	private static final String LAST_NAME = "Doe";
 	private static final Date DATE_OF_BIRTH = new Date();
+	private static final String DATE_OF_BIRTH_FIELD = "dateOfBirthField";
+	private static final String LAST_NAME_FIELD = "lastNameField";
+	private static final String FIRST_NAME_FIELD = "firstNameField";
 	private MainFrame mainFrame;
 
 	protected void setUp() throws Exception {
@@ -71,13 +74,19 @@ public class MainFrameTest extends JFCTestCase {
 		JButton addButton = (JButton) find(JButton.class, ADD_BUTTON_COMPONENT_NAME);
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		find(JPanel.class, ADD_PANEL_COMPONENT_NAME);
-		fillFields(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
+		
+		JTextField firstNameField = (JTextField) find(JTextField.class, FIRST_NAME_FIELD);
+		JTextField lastNameField = (JTextField) find(JTextField.class, LAST_NAME_FIELD);
+		JTextField dateOfBirthField = (JTextField) find(JTextField.class, DATE_OF_BIRTH_FIELD);
+		
+		getHelper().sendString(new StringEventData(this, firstNameField, FIRST_NAME));
+		
+//		fillFields(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
 		
 		JButton okButton = (JButton) find(JButton.class, OK_BUTTON_COMPONENT_NAME);
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
 		
 		find(JPanel.class, BROWSE_PANEL_COMPONENT_NAME);
-		// check dao results
 	}
 
 	private void fillFields(String firstName, String lastName, Date dateOfBirth) {
