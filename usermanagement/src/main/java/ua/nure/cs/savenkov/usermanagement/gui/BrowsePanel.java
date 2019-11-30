@@ -11,18 +11,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import ua.nure.cs.savenkov.usermanagement.util.Messages;
+
 public class BrowsePanel extends JPanel implements ActionListener {
 
-	private static final String ADD_COMMAND = "add";
-	private static final String EDIT_COMMAND = "edit";
-	private static final String DELETE_COMMAND = "delete";
-	private static final String DETAILS_COMMAND = "details";
-	private static final String DETAILS_BUTTON_COMPONENT_NAME = "detailsButton";
-	private static final String EDIT_BUTTON_COMPONENT_NAME = "editButton";
-	private static final String DELETE_BUTTON_COMPONENT_NAME = "deleteButton";
-	private static final String ADD_BUTTON_COMPONENT_NAME = "addButton";
-	private static final String USER_TABLE_COMPONENT_NAME = "userTable";
-	private static final String BROWSE_PANEL_COMPONENT_NAME = "browsePanel";
+	private static final String ADD_COMMAND = "add"; //$NON-NLS-1$
+	private static final String EDIT_COMMAND = "edit"; //$NON-NLS-1$
+	private static final String DELETE_COMMAND = "delete"; //$NON-NLS-1$
+	private static final String DETAILS_COMMAND = "details"; //$NON-NLS-1$
+	private static final String DETAILS_BUTTON_COMPONENT_NAME = "detailsButton"; //$NON-NLS-1$
+	private static final String EDIT_BUTTON_COMPONENT_NAME = "editButton"; //$NON-NLS-1$
+	private static final String DELETE_BUTTON_COMPONENT_NAME = "deleteButton"; //$NON-NLS-1$
+	private static final String ADD_BUTTON_COMPONENT_NAME = "addButton"; //$NON-NLS-1$
+	private static final String USER_TABLE_COMPONENT_NAME = "userTable"; //$NON-NLS-1$
+	private static final String BROWSE_PANEL_COMPONENT_NAME = "browsePanel"; //$NON-NLS-1$
 	
 	private MainFrame parent;
 	private JScrollPane tablePanel;
@@ -56,7 +58,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
 	private JButton getEditButton() {
 		if (editButton == null) {
 			editButton = new JButton();
-			editButton.setText("изменить"); //localize
+			editButton.setText(Messages.getString("BrowsePanel.edit")); //localize //$NON-NLS-1$
 			editButton.setName(EDIT_BUTTON_COMPONENT_NAME);
 			editButton.setActionCommand(EDIT_COMMAND);
 			editButton.addActionListener(this);
@@ -67,7 +69,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
 	private JButton getDeleteButton() {
 		if (deleteButton == null) {
 			deleteButton = new JButton();
-			deleteButton.setText("Удалить"); //localize
+			deleteButton.setText(Messages.getString("BrowsePanel.delete")); //localize //$NON-NLS-1$
 			deleteButton.setName(DELETE_BUTTON_COMPONENT_NAME);
 			deleteButton.setActionCommand(DELETE_COMMAND);
 			deleteButton.addActionListener(this);
@@ -78,7 +80,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
 	private JButton getDetailsButton() {
 		if (detailsButton == null) {
 			detailsButton = new JButton();
-			detailsButton.setText("Детали"); //localize
+			detailsButton.setText(Messages.getString("BrowsePanel.details")); //localize //$NON-NLS-1$
 			detailsButton.setName(DETAILS_BUTTON_COMPONENT_NAME);
 			detailsButton.setActionCommand(DETAILS_COMMAND);
 			detailsButton.addActionListener(this);
@@ -89,7 +91,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
 	private JButton getAddButton() {
 		if (addButton == null) {
 			addButton = new JButton();
-			addButton.setText("Добавить"); //localize
+			addButton.setText(Messages.getString("BrowsePanel.add")); //localize //$NON-NLS-1$
 			addButton.setName(ADD_BUTTON_COMPONENT_NAME);
 			addButton.setActionCommand(ADD_COMMAND);
 			addButton.addActionListener(this);
@@ -112,7 +114,7 @@ public class BrowsePanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String actionCommand = e.getActionCommand();
-		if ("add".equalsIgnoreCase(actionCommand)) {
+		if ("add".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
 			this.setVisible(false);
 			parent.showAddPanel();
 		}
