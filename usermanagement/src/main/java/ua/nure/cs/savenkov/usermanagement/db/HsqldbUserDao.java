@@ -15,7 +15,7 @@ import ua.nure.cs.savenkov.usermanagement.User;
 
 
 
-class HsqldbUserDao implements Dao<User> {
+class HsqldbUserDao implements UserDao {
   
   private static final String DELETE_QUERY = "DELETE FROM users WHERE id=?";
 private static final String SELECT_QUERY = "SELECT * FROM users WHERE id=?";

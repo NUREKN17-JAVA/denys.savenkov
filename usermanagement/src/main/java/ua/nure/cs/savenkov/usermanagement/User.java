@@ -8,6 +8,20 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private Date dateOfBirth;
+	public User(Long id, String firstName, String lastName, Date dateOfBirth) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+	}
+	public User(String firstName, String lastName, Date dateOfBirth) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+	}
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
 	public Long getId() {
 		return id;
 	}
@@ -56,5 +70,25 @@ public class User {
         	return currentYear - birthYear - 1;
         }
         return currentYear - birthYear;
+	}
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (this.getId() == null && ((User) obj).getId() == null) {
+			return true;
+		}
+		
+		return this.getId().equals(((User) obj).getId());
+	}
+	
+	public int hashCode() {
+		if (this.getId() == null) {
+			return 0;
+		}
+		return this.getId().hashCode();
 	}
 }

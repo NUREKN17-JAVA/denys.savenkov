@@ -2,13 +2,17 @@ package ua.nure.cs.savenkov.usermanagement.gui;
 
 import java.awt.Component;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import com.mockobjects.dynamic.Mock;
 
 import javafx.scene.input.DataFormat;
 import junit.extensions.jfcunit.JFCTestCase;
@@ -18,12 +22,15 @@ import junit.extensions.jfcunit.eventdata.MouseEventData;
 import junit.extensions.jfcunit.eventdata.StringEventData;
 import junit.extensions.jfcunit.finder.NamedComponentFinder;
 import junit.framework.TestCase;
+import ua.nure.cs.savenkov.usermanagement.User;
 import ua.nure.cs.savenkov.usermanagement.db.DaoFactory;
 import ua.nure.cs.savenkov.usermanagement.db.DaoFactoryImpl;
+import ua.nure.cs.savenkov.usermanagement.db.MockDaoFactory;
 import ua.nure.cs.savenkov.usermanagement.db.MockUserDao;
 
 public class MainFrameTest extends JFCTestCase {
 
+	private static final String FIND_ALL_COMMAND = "findAll";
 	private static final String DATE_OF_BIRTH_FIELD_COMPONENT_NAME = "dateOfBirthField";
 	private static final String LAST_NAME_FIELD_COMPONENT_NAME = "lastNameField";
 	private static final String FIRST_NAME_FIELD_COMPONENT_NAME = "firstNameField";
@@ -39,30 +46,40 @@ public class MainFrameTest extends JFCTestCase {
 	private static final String FIRST_NAME = "John";
 	private static final String LAST_NAME = "Doe";
 	private static final Date DATE_OF_BIRTH = new Date();
-	private static final String DATE_OF_BIRTH_FIELD = "dateOfBirthField";
-	private static final String LAST_NAME_FIELD = "lastNameField";
-	private static final String FIRST_NAME_FIELD = "firstNameField";
+	private static final String DEFAULT_NAME = "Sam";
+	
+	private static final String DEFAULT_SURNAME = "Willson";
 	private MainFrame mainFrame;
-
+	private Mock mockUserDao;
+	private List<User> users;
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		Properties properties = new Properties();
-		properties.setProperty("dao.UserDao", MockUserDao.class.getName());
-		properties.setProperty("dao.factory", DaoFactoryImpl.class.getName());
-		DaoFactory.getInstance().init(properties);
-		
-		
-		setHelper(new JFCTestHelper());
-		mainFrame = new MainFrame();
+		try {
+			Properties properties = new Properties();
+			properties.setProperty("dao.factory", MockDaoFactory.class.getName());
+			DaoFactory.getInstance().init(properties);
+			mockUserDao = ((MockDaoFactory) DaoFactory.getInstance()).getMockUserDao();
+			mockUserDao.expectAndReturn(FIND_ALL_COMMAND, new ArrayList());
+			setHelper(new JFCTestHelper());
+			mainFrame = new MainFrame();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		mainFrame.setVisible(true);
 	}
 
 	protected void tearDown() throws Exception {
-		mainFrame.setVisible(false);
-		getHelper();
-		TestHelper.cleanUp(this);
-		super.tearDown();
+		try {
+			mockUserDao.verify();
+			mainFrame.setVisible(false);
+			getHelper().cleanUp(this);
+			super.tearDown();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
 	protected Component find(Class<?> componentClass, String componentName) {
@@ -90,6 +107,11 @@ public class MainFrameTest extends JFCTestCase {
 	public void testAddUserOk() {
 		find(JPanel.class, BROWSE_PANEL_COMPONENT_NAME);
 		
+//		User user = new User(FIRSTNAME, LASTNAME, DATE);
+//		
+//		User expectedUser = new User(new Long(1), FIRSTNAME, LASTNAME, DATE);
+//		mockUserDao.expectAndReturn("create", user, expectedUser);
+//		
 		JTable table = (JTable)find(JTable.class, USER_TABLE_COMPONENT_NAME);
 		assertEquals(0, table.getRowCount());
 		
@@ -97,13 +119,11 @@ public class MainFrameTest extends JFCTestCase {
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		find(JPanel.class, ADD_PANEL_COMPONENT_NAME);
 		
-		JTextField firstNameField = (JTextField) find(JTextField.class, FIRST_NAME_FIELD);
-		JTextField lastNameField = (JTextField) find(JTextField.class, LAST_NAME_FIELD);
-		JTextField dateOfBirthField = (JTextField) find(JTextField.class, DATE_OF_BIRTH_FIELD);
+		fillFields(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
 		JButton okButton = (JButton) find(JButton.class, OK_BUTTON_COMPONENT_NAME);
 		find(JButton.class, CANCEL_BUTTON_COMPONENT_NAME);
 		
-		fillFields(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
+		
 		
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
 		

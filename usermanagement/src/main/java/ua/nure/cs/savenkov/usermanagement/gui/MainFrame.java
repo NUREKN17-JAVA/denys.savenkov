@@ -7,6 +7,9 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ua.nure.cs.savenkov.usermanagement.User;
+import ua.nure.cs.savenkov.usermanagement.db.UserDao;
+import ua.nure.cs.savenkov.usermanagement.db.DaoFactory;
 import ua.nure.cs.savenkov.usermanagement.util.Messages;
 
 public class MainFrame extends JFrame {
@@ -15,11 +18,18 @@ public class MainFrame extends JFrame {
 	private JPanel contentPanel;
 	private BrowsePanel browsePanel;
 	private AddPanel addPanel;
+	private UserDao dao;
+	private UserTableModel user_table;
 	
 	public MainFrame() {
 		super();
-		// dao
+		dao = DaoFactory.getInstance().getUserDao();
 		initialize();
+		user_table = new UserTableModel();
+	}
+
+	public UserDao getDao() {
+		return dao;
 	}
 
 	private void initialize() {
@@ -43,6 +53,7 @@ public class MainFrame extends JFrame {
 		if (browsePanel == null) {
 			browsePanel = new BrowsePanel(this);
 		}
+		((BrowsePanel) browsePanel).initTable();
 		return browsePanel;
 	}
 	private AddPanel getAddPanel() {

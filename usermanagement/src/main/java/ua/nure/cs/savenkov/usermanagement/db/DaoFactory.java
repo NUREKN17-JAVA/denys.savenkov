@@ -9,53 +9,55 @@ import ua.nure.cs.savenkov.usermanagement.User;
 
 public abstract class DaoFactory {
 	private static final String SETTING_PROPERTIES = "settings.properties";
-	private static final String CONNECTION_DRIVER = "connection.driver";
-	private static final String CONNECTION_URL = "connection.url";
-	private static final String CONNECTION_PASSWORD = "connection.password";
-	private static final String CONNECTION_USER = "connection.user";
+
 	protected static final String USER_DAO = "dao.UserDao";
 	private static final String DAO_FACTORY = "dao.factory";
 	
 	protected static Properties properties;
 	protected static DaoFactory instance;
+
 	
-	protected DaoFactory() {}
+	protected DaoFactory() {
+		properties = new Properties();
+		try {
+			properties.load(getClass().getClassLoader().getResourceAsStream(SETTING_PROPERTIES));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	
 	static {
 		properties = new Properties();
 		try {
-			properties.load(DaoFactory.class.getClass().getClassLoader().getResourceAsStream(SETTING_PROPERTIES));
-		}
-		catch (IOException e){
+			properties.load(DaoFactory.class.getClassLoader().getResourceAsStream(SETTING_PROPERTIES));
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
 	public static synchronized DaoFactory getInstance() {
-		if (instance == null){
-	    		try {
-				Class factoryClass = Class.forName(properties
-						.getProperty(DAO_FACTORY));
+		if (instance == null) {
+			Class factoryClass;
+			try {
+				factoryClass = Class.forName(properties.getProperty(DAO_FACTORY));
 				instance = (DaoFactory) factoryClass.newInstance();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-	   	}
-	       return instance;
+		}
+		return instance;
 	}
 	
-	protected abstract ConnectionFactory getConnectionFactory();
-//	String user = properties.getProperty(CONNECTION_USER);
-//	String password = properties.getProperty(CONNECTION_PASSWORD);
-//	String url  = properties.getProperty(CONNECTION_URL);
-//	String driver = properties.getProperty(CONNECTION_DRIVER);
-//	return new ConnectionFactoryImpl(driver, url, user, password);
 	
-	public abstract Dao<User> getUserDao();
-	
-	
-	public void init(Properties properties) {
-		this.properties = properties;
+	public static void init(Properties prop) {
+		properties = prop;
 		instance = null;
 	}
+	
+	protected ConnectionFactory getConnectionFactory() {
+		return new ConnectionFactoryImpl(properties);
+	}
+	
+	public abstract UserDao getUserDao();
 }

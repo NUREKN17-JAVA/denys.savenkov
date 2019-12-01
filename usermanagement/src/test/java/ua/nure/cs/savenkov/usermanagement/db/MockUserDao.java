@@ -6,8 +6,8 @@ import java.util.Map;
 
 import ua.nure.cs.savenkov.usermanagement.User;
 
-public class MockUserDao implements Dao<User> {
-	private long id = 0;
+public class MockUserDao implements UserDao {
+	private Long id = (long) 0;
 	private Map users = new HashMap();
 	
 	@ Override
@@ -37,13 +37,12 @@ public class MockUserDao implements Dao<User> {
 	}
 
 	@Override
-	public Collection<User> findAll() throws DataBaseException {
+	public Collection findAll() throws DataBaseException {
 		return users.values();
 	}
 
 	@Override
 	public void setConnectionFactory(ConnectionFactory connectionFactory) {
-		// TODO Auto-generated method stub
 		
 	}
 
