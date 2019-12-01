@@ -77,7 +77,6 @@ public class MainFrameTest extends JFCTestCase {
 			getHelper().cleanUp(this);
 			super.tearDown();
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
@@ -106,12 +105,6 @@ public class MainFrameTest extends JFCTestCase {
 	
 	public void testAddUserOk() {
 		find(JPanel.class, BROWSE_PANEL_COMPONENT_NAME);
-		
-//		User user = new User(FIRSTNAME, LASTNAME, DATE);
-//		
-//		User expectedUser = new User(new Long(1), FIRSTNAME, LASTNAME, DATE);
-//		mockUserDao.expectAndReturn("create", user, expectedUser);
-//		
 		JTable table = (JTable)find(JTable.class, USER_TABLE_COMPONENT_NAME);
 		assertEquals(0, table.getRowCount());
 		
@@ -131,6 +124,29 @@ public class MainFrameTest extends JFCTestCase {
 		table = (JTable)find(JTable.class, USER_TABLE_COMPONENT_NAME);
 		assertEquals(1, table.getRowCount());
 	}
+	
+	public void testAddUserCancel() {
+		find(JPanel.class, BROWSE_PANEL_COMPONENT_NAME);
+		JTable table = (JTable)find(JTable.class, USER_TABLE_COMPONENT_NAME);
+		assertEquals(0, table.getRowCount());
+		
+		JButton addButton = (JButton) find(JButton.class, ADD_BUTTON_COMPONENT_NAME);
+		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
+		find(JPanel.class, ADD_PANEL_COMPONENT_NAME);
+		
+		fillFields(FIRST_NAME, LAST_NAME, DATE_OF_BIRTH);
+		JButton cancelButton = (JButton) find(JButton.class, CANCEL_BUTTON_COMPONENT_NAME);
+		find(JButton.class, CANCEL_BUTTON_COMPONENT_NAME);
+		
+		
+		
+		getHelper().enterClickAndLeave(new MouseEventData(this, cancelButton));
+		
+		find(JPanel.class, BROWSE_PANEL_COMPONENT_NAME);
+		table = (JTable)find(JTable.class, USER_TABLE_COMPONENT_NAME);
+		assertEquals(0, table.getRowCount());
+	}
+
 
 	private void fillFields(String firstName, String lastName, Date dateOfBirth) {
 		JTextField firstNameField = (JTextField) find(JTextField.class, FIRST_NAME_FIELD_COMPONENT_NAME);
