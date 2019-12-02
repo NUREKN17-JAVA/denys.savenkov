@@ -31,14 +31,14 @@ public class AddPanel extends JPanel implements ActionListener {
 	private Color bgcolor;
 
 	public AddPanel(MainFrame mainFrame) {
-		parent = mainFrame;
+		this.parent = mainFrame;
 		initialize();
 	}
 	
 	private void initialize() {
 		this.setName("addPanel"); //$NON-NLS-1$
 		this.setLayout(new BorderLayout());
-		this.add(getFieldPanel(), BorderLayout.SOUTH);
+		this.add(getFieldPanel(), BorderLayout.NORTH);
 		this.add(getButtonPanel(), BorderLayout.SOUTH);
 	}
 
@@ -118,11 +118,11 @@ public class AddPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if("ok".equalsIgnoreCase(e.getActionCommand())) {
+		if ("ok".equalsIgnoreCase(e.getActionCommand())) {
 			User user = new User();
 			user.setFirstName(getFirstNameField().getText());
 			user.setLastName(getLastNameField().getText());
-			DateFormat format = DateFormat.getDateInstance(); 
+			DateFormat format = DateFormat.getDateInstance();
 			try {
 				user.setDateOfBirth(format.parse(getDateOfBirthField().getText()));
 			} catch (ParseException e1) {
@@ -132,6 +132,7 @@ public class AddPanel extends JPanel implements ActionListener {
 			try {
 				parent.getDao().create(user);
 			} catch (DataBaseException e1) {
+				// TODO Auto-generated catch block
 				JOptionPane.showMessageDialog(this, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
