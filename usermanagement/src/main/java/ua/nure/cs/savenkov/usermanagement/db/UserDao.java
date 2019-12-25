@@ -26,6 +26,8 @@ public interface UserDao {
 	   User find(Long id) throws DataBaseException;
 
 	   Collection<User> findAll() throws DataBaseException;
+	   
+	   Collection find(String firstName, String lastName) throws DataBaseException;
 	    
 	   void setConnectionFactory(ConnectionFactory connectionFactory);
 }
