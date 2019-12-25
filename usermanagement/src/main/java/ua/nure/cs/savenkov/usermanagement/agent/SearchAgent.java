@@ -13,11 +13,16 @@ import ua.nure.cs.savenkov.usermanagement.db.DaoFactory;
 import ua.nure.cs.savenkov.usermanagement.db.DataBaseException;
 
 public class SearchAgent extends Agent {
-	protected AID[] aids;
+	private AID[] aids;
+	private SearchGui gui = null;
 
 	protected void setup() {
 		super.setup();
 		System.out.println(getAID().getName() + " started");
+		
+		gui = new SearchGui(this);
+		gui.setVisible(true);
+		
 		
 		DFAgentDescription description = new DFAgentDescription();
 		description.setName(getAID());
@@ -63,6 +68,8 @@ public class SearchAgent extends Agent {
 		} catch (FIPAException e) {
 			e.printStackTrace();
 		}
+		gui.setVisible(false);
+		gui.dispose();
 		super.takeDown();
 	}
 	
@@ -81,6 +88,6 @@ public class SearchAgent extends Agent {
 	}
 	
 	void showUsers(Collection user) {
-		// TODO Отобразить найденных пользователей
+		gui.addUsers(user);
 	}
 }
